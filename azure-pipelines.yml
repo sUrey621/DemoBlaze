@@ -14,10 +14,10 @@ steps:
  
 - script: |
     # Clone another GitHub repository into a specific path
-    git clone https://github.com/sUrey621/DemoBlaze.git $(Build.SourcesDirectory)/MyProjects/MyRepo
+    git clone https://github.com/sUrey621/DemoBlaze.git $(Build.SourcesDirectory)DemoBlaze/MyRepo
  
     # Change directory to the cloned repo
-    cd $(Build.SourcesDirectory)/MyProjects/MyRepo
+    cd $(Build.SourcesDirectory)/DemoBlaze/MyRepo
     # Run build or test commands
     ./build.sh  # Example command
   displayName: 'Clone and Build MyRepo'
