@@ -5,21 +5,19 @@
 
 trigger:
 - main
-
+ 
 pool:
-  vmImage: ubuntu-latest
-
+  vmImage: 'ubuntu-latest'
+ 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
+- checkout: self  # Checks out the primary repository
+ 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-    cd $(Build.SourcesDirectory)https://suresh21@dev.azure.com/suresh21/DemoBlaze/_git/DemoBlaze
-  displayName: 'Run a multi-line script'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'  # Path to publish artifacts
-    ArtifactName: 'my-artifact'
-    publishLocation: 'Container'
+    # Clone another GitHub repository into a specific path
+    git clone https://github.com/sUrey621/DemoBlaze.git $(Build.SourcesDirectory)/MyProjects/MyRepo
+ 
+    # Change directory to the cloned repo
+    cd $(Build.SourcesDirectory)/MyProjects/MyRepo
+    # Run build or test commands
+    ./build.sh  # Example command
+  displayName: 'Clone and Build MyRepo'
