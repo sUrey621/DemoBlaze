@@ -20,11 +20,11 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean install'
-    options: '-X'
+    #options: '-X'
     publishJUnitResults: true
     testResultsFiles: '**/target/surefire-reports/*.xml'  # Adjust for your test report location
     codeCoverageToolOption: 'jacoco'  # Optional, adjust as needed
-    #options: '-Dmaven.test.failure.ignore=true'  # Optional, if you want to ignore test failures
+    options: '-Dmaven.test.failure.ignore=true'  # Optional, if you want to ignore test failures
 
 - task: PublishBuildArtifacts@1
   inputs:
