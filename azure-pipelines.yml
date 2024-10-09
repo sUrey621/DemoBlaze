@@ -26,6 +26,13 @@ steps:
     mavenPomFile: 'pom.xml'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+- task: AppCenterDistribute@3
+  inputs:
+    appSlug: 'A'
+    appFile: '/usr/local/bin'
+    releaseNotesOption: 'input'
+    releaseNotesInput: 'Done'
+    destinationType: 'groups'
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
