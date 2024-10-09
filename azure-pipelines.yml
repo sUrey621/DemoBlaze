@@ -21,3 +21,18 @@ steps:
     # Run build or test commands
     ./build.sh  # Example command
   displayName: 'Clone and Build MyRepo'
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+- task: JenkinsDownloadArtifacts@1
+  inputs:
+    jobName: 
+    saveTo: 'jenkinsArtifacts'
+    jenkinsBuild: 'LastSuccessfulBuild'
