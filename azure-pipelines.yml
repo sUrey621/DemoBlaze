@@ -3,43 +3,32 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+# azure-pipelines.yml
+
 trigger:
-- main
- 
+- main  # Change to your main branch
+
 pool:
-  vmImage: 'ubuntu-latest'
- 
+  vmImage: 'ubuntu-latest'  # Use the latest Ubuntu image
+
 steps:
-- checkout: self  # Checks out the primary repository
- 
-- script: |
-    # Clone another GitHub repository into a specific path
-    git clone https://github.com/sUrey621/DemoBlaze.git $(Build.SourcesDirectory)DemoBlaze/MyRepo
- 
-    # Change directory to the cloned repo
-    cd $(Build.SourcesDirectory)/DemoBlaze/MyRepo
-    # Run build or test commands
-    ./build.sh  # Example command
-  displayName: 'Clone and Build MyRepo'
-- task: Maven@4
+- task: MavenAuthenticate@0  # Authenticate to your Maven feed if needed
+  inputs:
+    mavenServiceConnection: 'YourServiceConnectionName'  # Optional
+
+- task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
+    goals: 'clean install'
+    options: '-X'
     publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-- task: AppCenterDistribute@3
+    testResultsFiles: '**/target/surefire-reports/*.xml'  # Adjust for your test report location
+    codeCoverageToolOption: 'jacoco'  # Optional, adjust as needed
+    #options: '-Dmaven.test.failure.ignore=true'  # Optional, if you want to ignore test failures
+
+- task: PublishBuildArtifacts@1
   inputs:
-    appSlug: 'A'
-    appFile: '/usr/local/bin'
-    releaseNotesOption: 'input'
-    releaseNotesInput: 'Done'
-    destinationType: 'groups'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-- task: JenkinsDownloadArtifacts@1
-  inputs:
-    jobName: 
-    saveTo: 'jenkinsArtifacts'
-    jenkinsBuild: 'LastSuccessfulBuild'
+    PathtoPublish: 'target'  # Directory to publish
+    ArtifactName: 'drop'  # Name of the artifact
+    publishLocation: 'Container'  # Publish to Azure DevOps
+
